@@ -7,6 +7,7 @@ public class Pane extends JPanel {
 
     private final int FPS=60;
     private final long delta=1_000_000_000/FPS;
+    private final double step=1D/FPS;
 
     private final Color BG_COLOR=Color.white;
 
@@ -26,32 +27,34 @@ public class Pane extends JPanel {
 
     }
     private void loop(){
-        new Thread(()->{
+        Thread gameLoop=new Thread(()->{
             long now=System.nanoTime();
             long next=now+delta;
             long elapsed;
-            while(true){
+            while(!Thread.interrupted()){
                 now=System.nanoTime();
                 elapsed=next-now;
                 if(elapsed<=0){
-                    update(delta);
+                    update(step);
                     repaint();
 
-                    next=now+delta;
+                    next+=delta;
                 }
                 else{
                     try {
-                        Thread.sleep(elapsed/1_000_000,(int)elapsed%1_000_000);
+                        Thread.sleep((long)(step*1_000),(int)(elapsed%1_000_000));
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        return;
                     }
                 }
 
             }
-        }).start();
+        });
+        gameLoop.setDaemon(true);
+        gameLoop.start();
     }
 
-    private void update(long dt){
+    private void update(double dt){
         world.update(dt);
     }
     @Override

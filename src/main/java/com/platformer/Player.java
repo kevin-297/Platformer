@@ -6,7 +6,6 @@ public class Player {
 
     private double x,y;
     private double vx,vy;
-    private double ax,ay;
 
     private boolean onGround=true;
 
@@ -15,7 +14,9 @@ public class Player {
     private final int MAX_H_SPEED=200;
     private final int MAX_FALL_SPEED =500;
     private final int H_ACCELERATION=800;
-    private final int JUMP_SPEED =200;
+    private final int TH_ACCELERATION=1600;
+    private final int JUMP_SPEED =600;
+    private final int FRICTION = 1600;
 
     private final int WIDTH =50;
     private final int HEIGHT=50;
@@ -25,9 +26,9 @@ public class Player {
         this.y=y;
     }
 
-    public void update(long dt,Platform platform){
-        ay=World.GRAVITY;
-        vy+=ay*dt/1_000_000_000d;
+    public void update(double dt,Platform platform){
+        double ay=World.GRAVITY;
+        vy+=ay*dt;
 
         if(Input.isJump() && onGround) {
             vy = -JUMP_SPEED;
@@ -36,7 +37,7 @@ public class Player {
 
         vy=(vy> MAX_FALL_SPEED)? MAX_FALL_SPEED :vy;
 
-        y+=vy*dt/1_000_000_000d;
+        y+=vy*dt;
 
         //To fix later (fragile collision detection)
         if(y<=0){
@@ -49,13 +50,30 @@ public class Player {
             onGround=true;
         }
 
-        ax=((Input.isRight()?1:0)+(Input.isLeft()?-1:0))*H_ACCELERATION;
+        byte dir=(byte)((Input.isRight()?1:0)+(Input.isLeft()?-1:0));
 
-        vx+=ax*dt/1_000_000_000d;
+        double ax;
+
+        if(dir!=0) {
+            if (vx != 0 && Integer.signum(dir) != Integer.signum((int) vx))
+                ax = dir * TH_ACCELERATION;
+            else
+                ax = dir * H_ACCELERATION;
+            vx+= ax * dt;
+        }
+        else{
+            double drop= FRICTION *dt;
+            if(Math.abs(vx)<= drop)
+                vx=0;
+            else
+                vx-= Math.signum(vx) * drop;
+        }
+        //continue friction handling
+
         if(Math.abs(vx)>MAX_H_SPEED)
-            vx=(vx/Math.abs(vx))*MAX_H_SPEED;
+            vx=Math.signum(vx)*MAX_H_SPEED;
 
-        x+=vx*dt/1_000_000_000d;
+        x+=vx*dt;
         if(x<=0){
             x=0;
             vx=0;

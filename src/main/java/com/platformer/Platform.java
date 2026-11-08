@@ -8,7 +8,7 @@ public class Platform {
 
     private final Color PF_COLOR=Color.gray;
     private final int WIDTH=700;
-    private final int HEIGH=200;
+    private final int HEIGHT =200;
 
     public Platform(int x,int y){
         this.x=x;
@@ -18,7 +18,7 @@ public class Platform {
     public void paint(Graphics g){
 
         g.setColor(PF_COLOR);
-        g.fillRect(x,y,WIDTH,HEIGH);
+        g.fillRect(x,y,WIDTH, HEIGHT);
 
     }
 
@@ -31,8 +31,8 @@ public class Platform {
     public int getWidth(){
         return WIDTH;
     }
-    public int getHeigh(){
-        return HEIGH;
+    public int getHeight(){
+        return HEIGHT;
     }
 
 }

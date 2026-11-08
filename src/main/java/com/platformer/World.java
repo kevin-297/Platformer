@@ -6,14 +6,12 @@ public class World {
 
     public static final int WIDTH=700;
     public static final int HEIGHT=500;
-    public static final int GRAVITY=500;
-
-    private final Color WORLD_COLOR=Color.white;
+    public static final int GRAVITY=1500;
 
     private final Player player=new Player(10,10);
     private final Platform platform=new Platform(0,300);
 
-    public void update(long dt) {
+    public void update(double dt) {
         player.update(dt,platform);
     }
     public void paint(Graphics g){
