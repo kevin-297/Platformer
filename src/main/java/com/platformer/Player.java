@@ -1,6 +1,7 @@
 package com.platformer;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Player {
 
@@ -24,6 +25,10 @@ public class Player {
     public Player(int x,int y){
         this.x=x;
         this.y=y;
+    }
+
+    public Point2D getLoc(){
+        return new Point2D.Double(x+WIDTH,y+HEIGHT);
     }
 
     public void update(double dt,Platform platform){
@@ -55,7 +60,7 @@ public class Player {
         double ax;
 
         if(dir!=0) {
-            if (vx != 0 && Integer.signum(dir) != Integer.signum((int) vx))
+            if (vx != 0 && dir!= Math.signum(vx))
                 ax = dir * TH_ACCELERATION;
             else
                 ax = dir * H_ACCELERATION;
@@ -88,7 +93,7 @@ public class Player {
     public void paint(Graphics g){
 
         g.setColor(PLAYER_COLOR);
-        g.fillRect((int)x,(int)y,WIDTH,HEIGHT);
+        g.fillRect((int)Math.round(x),(int)Math.round(y),WIDTH,HEIGHT);
 
     }
 
