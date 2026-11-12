@@ -28,7 +28,7 @@ public class Player {
     }
 
     public Point2D getLoc(){
-        return new Point2D.Double(x+WIDTH,y+HEIGHT);
+        return new Point2D.Double(x+WIDTH/2D,y+HEIGHT/2D);
     }
 
     public void update(double dt,Platform platform){
