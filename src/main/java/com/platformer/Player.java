@@ -8,9 +8,11 @@ public class Player {
     private double x,y;
     private double vx,vy;
 
-    private boolean onGround=true;
+    private boolean onGround=false;
 
     private final Color PLAYER_COLOR=Color.black;
+
+    private final double EPS=0.0001;
 
     private final int MAX_H_SPEED=200;
     private final int MAX_FALL_SPEED =500;
@@ -19,7 +21,7 @@ public class Player {
     private final int JUMP_SPEED =600;
     private final int FRICTION = 1600;
 
-    private final int WIDTH =50;
+    private final int WIDTH =20;
     private final int HEIGHT=50;
 
     public Player(int x,int y){
@@ -31,28 +33,38 @@ public class Player {
         return new Point2D.Double(x+WIDTH/2D,y+HEIGHT/2D);
     }
 
-    public void update(double dt,Platform platform){
+    public void update(double dt){
+
         double ay=World.GRAVITY;
         vy+=ay*dt;
 
-        if(Input.isJump() && onGround) {
+        if(Input.isJump() && onGround)
             vy = -JUMP_SPEED;
-            onGround=false;
-        }
 
         vy=(vy> MAX_FALL_SPEED)? MAX_FALL_SPEED :vy;
 
+        onGround=false;
         y+=vy*dt;
 
-        //To fix later (fragile collision detection)
-        if(y<=0){
-            y=0;
-            vy=0;
-        }
-        else if(y+HEIGHT>=platform.getY()){
-            y=platform.getY()-HEIGHT;
-            vy=0;
-            onGround=true;
+        int topTile=(int)Math.floor(y/World.TILE_SIZE);
+        int downTile=(int)Math.floor((y+HEIGHT-EPS)/World.TILE_SIZE);
+        int leftTile=(int)Math.floor(x/World.TILE_SIZE);
+        int rightTile=(int)Math.floor((x+WIDTH-EPS)/World.TILE_SIZE);
+
+        if(vy!=0 ){
+            for(int tx=leftTile;tx<=rightTile;tx++) {
+                int ty=(vy>0)?downTile:topTile;
+                if (World.isSolid(tx, ty)){
+                    if(vy>0) {
+                        y = ty * World.TILE_SIZE - HEIGHT;
+                        onGround=true;
+                    }
+                    else
+                        y = (ty+1) * World.TILE_SIZE;
+                    vy = 0;
+                    break;
+                }
+            }
         }
 
         byte dir=(byte)((Input.isRight()?1:0)+(Input.isLeft()?-1:0));
@@ -73,19 +85,29 @@ public class Player {
             else
                 vx-= Math.signum(vx) * drop;
         }
-        //continue friction handling
 
         if(Math.abs(vx)>MAX_H_SPEED)
             vx=Math.signum(vx)*MAX_H_SPEED;
 
         x+=vx*dt;
-        if(x<=0){
-            x=0;
-            vx=0;
-        }
-        else if(x+WIDTH>=World.WIDTH){
-            x=World.WIDTH-WIDTH;
-            vx=0;
+
+        topTile=(int)Math.floor(y/World.TILE_SIZE);
+        downTile=(int)Math.floor((y+HEIGHT-EPS)/World.TILE_SIZE);
+        leftTile=(int)Math.floor(x/World.TILE_SIZE);
+        rightTile=(int)Math.floor((x+WIDTH-EPS)/World.TILE_SIZE);
+
+        if(vx!=0 ){
+            for(int ty=topTile;ty<=downTile;ty++) {
+                int tx=(vx>0)?rightTile:leftTile;
+                if (World.isSolid(tx, ty)){
+                    if(vx>0)
+                        x =tx * World.TILE_SIZE-WIDTH;
+                    else
+                        x = (tx+1) * World.TILE_SIZE;
+                    vx = 0;
+                    break;
+                }
+            }
         }
 
     }

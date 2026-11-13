@@ -71,7 +71,7 @@ public class Pane extends JPanel {
 
         Graphics2D g2=(Graphics2D)g.create();
         camera.applyCamera(g2);
-        world.paint(g2);
+        world.paint(g2,camera.getCamera());
         g2.dispose();
 
     }

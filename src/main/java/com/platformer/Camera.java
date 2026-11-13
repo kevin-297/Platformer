@@ -1,6 +1,7 @@
 package com.platformer;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Camera {
 
@@ -29,19 +30,13 @@ public class Camera {
         drawX=Math.round(x);
         drawY=Math.round(y);
     }
-    public long worldToScreenX(double worldX) { return Math.round(worldX) - drawX; }
-    public long worldToScreenY(double worldY) { return Math.round(worldY) - drawY; }
-    public double screenToWorldX(int screenX) { return screenX + drawX; }
-    public double screenToWorldY(int screenY) { return screenY + drawY; }
 
     public Dimension getView(){
         return new Dimension(viewWidth,viewHeight);
     }
-    public void setViewWidth(int width){
-        this.viewWidth=width;
-    }
-    public void setViewHeight(int height){
-        this.viewHeight=height;
+
+    public Rectangle getCamera(){
+        return new Rectangle((int)drawX,(int)drawY,viewWidth,viewHeight);
     }
 
     public void applyCamera(Graphics2D g){
