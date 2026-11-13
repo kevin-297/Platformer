@@ -1,12 +1,12 @@
 package com.platformer;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class Player {
 
-    private double x,y;
-    private double vx,vy;
+    private double tileX,tileY;
+    private double tileVX,tileVY;
 
     private boolean onGround=false;
 
@@ -14,54 +14,55 @@ public class Player {
 
     private final double EPS=0.0001;
 
-    private final int MAX_H_SPEED=200;
-    private final int MAX_FALL_SPEED =500;
-    private final int H_ACCELERATION=800;
-    private final int TH_ACCELERATION=1600;
-    private final int JUMP_SPEED =600;
-    private final int FRICTION = 1600;
+    private final double MAX_H_SPEED=7;
+    private final double MAX_FALL_SPEED =25;
+    private final double H_ACCELERATION=44;
+    private final double TH_ACCELERATION=88;
+    private final double JUMP_SPEED =16;
+    private final double FRICTION = 56;
 
-    private final int WIDTH =20;
-    private final int HEIGHT=50;
+    private final double WIDTH =0.6;
+    private final double HEIGHT=1.6;
 
-    public Player(int x,int y){
-        this.x=x;
-        this.y=y;
+    public Player(double tileX,double y){
+        this.tileX=tileX;
+        this.tileY=tileY;
     }
 
-    public Point2D getLoc(){
-        return new Point2D.Double(x+WIDTH/2D,y+HEIGHT/2D);
-    }
+    public double getX(){return tileX;}
+    public double getY(){return tileY;}
+    public double getWidth(){return WIDTH;}
+    public double getHeight(){return HEIGHT;}
 
     public void update(double dt){
 
-        double ay=World.GRAVITY;
-        vy+=ay*dt;
+        double tileAY=World.GRAVITY;
+        tileVY+=tileAY*dt;
 
         if(Input.isJump() && onGround)
-            vy = -JUMP_SPEED;
+            tileVY = -JUMP_SPEED;
 
-        vy=(vy> MAX_FALL_SPEED)? MAX_FALL_SPEED :vy;
+        tileVY= Math.min(tileVY, MAX_FALL_SPEED);
 
         onGround=false;
-        y+=vy*dt;
+        tileY+=tileVY*dt;
 
-        int topTile=(int)Math.floor(y/World.TILE_SIZE);
-        int downTile=(int)Math.floor((y+HEIGHT-EPS)/World.TILE_SIZE);
-        int leftTile=(int)Math.floor(x/World.TILE_SIZE);
-        int rightTile=(int)Math.floor((x+WIDTH-EPS)/World.TILE_SIZE);
+        int topTile=(int)Math.floor(tileY);
+        int downTile=(int)Math.floor(tileY+HEIGHT-EPS);
+        int leftTile=(int)Math.floor(tileX);
+        int rightTile=(int)Math.floor(tileX+WIDTH-EPS);
 
-        if(vy!=0 ){
+        if(tileVY!=0 ){
             for(int tx=leftTile;tx<=rightTile;tx++) {
-                int ty=(vy>0)?downTile:topTile;
+                int ty=(tileVY>0)?downTile:topTile;
                 if (World.isSolid(tx, ty)){
-                    if(vy>0) {
-                        y = ty * World.TILE_SIZE - HEIGHT;
+                    if(tileVY>0) {
+                        tileY = ty-HEIGHT;
                         onGround=true;
                     }
                     else
-                        y = (ty+1) * World.TILE_SIZE;
-                    vy = 0;
+                        tileY = ty+1;
+                    tileVY = 0;
                     break;
                 }
             }
@@ -69,42 +70,42 @@ public class Player {
 
         byte dir=(byte)((Input.isRight()?1:0)+(Input.isLeft()?-1:0));
 
-        double ax;
+        double tileAX;
 
         if(dir!=0) {
-            if (vx != 0 && dir!= Math.signum(vx))
-                ax = dir * TH_ACCELERATION;
+            if (tileVX != 0 && dir!= Math.signum(tileVX))
+                tileAX = dir * TH_ACCELERATION;
             else
-                ax = dir * H_ACCELERATION;
-            vx+= ax * dt;
+                tileAX = dir * H_ACCELERATION;
+            tileVX+= tileAX * dt;
         }
         else{
             double drop= FRICTION *dt;
-            if(Math.abs(vx)<= drop)
-                vx=0;
+            if(Math.abs(tileVX)<= drop)
+                tileVX=0;
             else
-                vx-= Math.signum(vx) * drop;
+                tileVX-= Math.signum(tileVX) * drop;
         }
 
-        if(Math.abs(vx)>MAX_H_SPEED)
-            vx=Math.signum(vx)*MAX_H_SPEED;
+        if(Math.abs(tileVX)>MAX_H_SPEED)
+            tileVX=Math.signum(tileVX)*MAX_H_SPEED;
 
-        x+=vx*dt;
+        tileX+=tileVX*dt;
 
-        topTile=(int)Math.floor(y/World.TILE_SIZE);
-        downTile=(int)Math.floor((y+HEIGHT-EPS)/World.TILE_SIZE);
-        leftTile=(int)Math.floor(x/World.TILE_SIZE);
-        rightTile=(int)Math.floor((x+WIDTH-EPS)/World.TILE_SIZE);
+        topTile=(int)Math.floor(tileY);
+        downTile=(int)Math.floor(tileY+HEIGHT-EPS);
+        leftTile=(int)Math.floor(tileX);
+        rightTile=(int)Math.floor(tileX+WIDTH-EPS);
 
-        if(vx!=0 ){
+        if(tileVX!=0 ){
             for(int ty=topTile;ty<=downTile;ty++) {
-                int tx=(vx>0)?rightTile:leftTile;
+                int tx=(tileVX>0)?rightTile:leftTile;
                 if (World.isSolid(tx, ty)){
-                    if(vx>0)
-                        x =tx * World.TILE_SIZE-WIDTH;
+                    if(tileVX>0)
+                        tileX = tx-WIDTH;
                     else
-                        x = (tx+1) * World.TILE_SIZE;
-                    vx = 0;
+                        tileX = tx+1;
+                    tileVX = 0;
                     break;
                 }
             }
@@ -114,8 +115,12 @@ public class Player {
 
     public void paint(Graphics g){
 
+        int T=World.TILE_SIZE;
+
+
+
         g.setColor(PLAYER_COLOR);
-        g.fillRect((int)Math.round(x),(int)Math.round(y),WIDTH,HEIGHT);
+        g.fillRect((int)Math.round(tileX*T),(int)Math.round(tileY*T),(int)Math.round(WIDTH*T),(int)Math.round(HEIGHT*T));
 
     }
 

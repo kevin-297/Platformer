@@ -1,7 +1,6 @@
 package com.platformer;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class Camera {
 
@@ -14,10 +13,10 @@ public class Camera {
         viewHeight=height;
     }
 
-    public void update(double dt, double playerX, double playerY, int width, int height) {
+    public void update(double playerX, double playerY, double width, double height) {
 
-        x=playerX-viewWidth/2D;
-        y=playerY-viewHeight/2D;
+        x=playerX-viewWidth /2;
+        y=playerY-viewHeight/2;
 
         x=x<0?0:x>width -viewWidth ?width -viewWidth :x;
         y=y<0?0:y>height-viewHeight?height-viewHeight:y;

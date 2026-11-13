@@ -2,7 +2,6 @@ package com.platformer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class Pane extends JPanel {
 
@@ -60,10 +59,16 @@ public class Pane extends JPanel {
     private void update(){
         world.update(step);
 
-        Point2D player=world.getPlayerLoc();
-        Dimension size=world.getWorldSize();
+        double T=World.TILE_SIZE;
+        Rectangle player=world.getPlayer();
+        Dimension worldSize=world.getWorldSize();
 
-        camera.update(step,player.getX(),player.getY(),size.width,size.height);
+        int px=player.x;
+        int py=player.y;
+        int pw=player.width;
+        int ph=player.height;
+
+        camera.update(px+pw/2,py+ph/2,worldSize.width*T,worldSize.height*T);
     }
     @Override
     protected void paintComponent(Graphics g) {
