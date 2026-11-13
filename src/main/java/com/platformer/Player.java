@@ -1,7 +1,6 @@
 package com.platformer;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 public class Player {
 
@@ -33,6 +32,15 @@ public class Player {
     public double getY(){return tileY;}
     public double getWidth(){return WIDTH;}
     public double getHeight(){return HEIGHT;}
+
+    public Rectangle getBounds(){
+        return new Rectangle(
+                (int)Math.round(getX()*World.TILE_SIZE),
+                (int)Math.round(getY()*World.TILE_SIZE),
+                (int)Math.round(getWidth()*World.TILE_SIZE),
+                (int)Math.round(getHeight()*World.TILE_SIZE)
+        );
+    }
 
     public void update(double dt){
 
@@ -117,10 +125,10 @@ public class Player {
 
         int T=World.TILE_SIZE;
 
-
+        Rectangle p=getBounds();
 
         g.setColor(PLAYER_COLOR);
-        g.fillRect((int)Math.round(tileX*T),(int)Math.round(tileY*T),(int)Math.round(WIDTH*T),(int)Math.round(HEIGHT*T));
+        g.fillRect(p.x,p.y,p.width,p.height);
 
     }
 

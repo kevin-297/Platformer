@@ -18,6 +18,26 @@ public class World {
     public static final int GRAVITY=47;
     public static final int TILE_SIZE=32;
 
+    private enum Block{
+        AIR(false,null),
+        GRASS(true,new Color(90,170,60)),
+        DIRT(true,new Color(130,90,50)),
+        STONE(true,new Color(120,120,120));
+
+        public final boolean solid;
+        public final Color color;
+
+        Block(boolean solid,Color color){
+            this.solid=solid;
+            this.color=color;
+        }
+        private static final Block[] ids=values();
+
+        public static Block fromID(int id){
+            return ids[id];
+        }
+    }
+
     private static final byte[][] map=loadMap();
 
     private static final int TILE_WIDTH=map[0].length;
@@ -25,13 +45,8 @@ public class World {
 
     private final Player player=new Player(10,10);
 
-    public Rectangle getPlayer(){
-        return new Rectangle(
-                (int)Math.round(player.getX()*TILE_SIZE),
-                (int)Math.round(player.getY()*TILE_SIZE),
-                (int)Math.round(player.getWidth()*TILE_SIZE),
-                (int)Math.round(player.getHeight()*TILE_SIZE)
-        );
+    public Rectangle getPlayerBounds(){
+        return player.getBounds();
     }
     public Dimension getWorldSize(){
         return new Dimension(TILE_WIDTH,TILE_HEIGHT);
@@ -57,8 +72,8 @@ public class World {
                 if(row.length()!=grid[0].length)
                     throw new IllegalStateException("Expected row size of : "+grid[0].length+" but found : "+row.length());
                 for(char c:row.toCharArray()){
-                    if("01".indexOf(c)==-1)
-                        throw new IllegalStateException("Allowed chars are : 1 0 , found :"+c);
+                    if(c<'0' || c-'0'>=Block.values().length)
+                        throw new IllegalStateException("Unknown block id "+c);
                     byte value=(byte) (c-'0');
                     grid[y][x]=value;
                     x++;
@@ -73,7 +88,7 @@ public class World {
     }
 
     public static boolean isSolid(int x,int y){
-        return y >= map.length || y < 0 || x >= map[0].length || x < 0 || map[y][x] == 1;
+        return y >= map.length || y < 0 || x >= map[0].length || x < 0 || Block.fromID(map[y][x]).solid;
     }
 
     public void update(double dt) {
@@ -88,7 +103,9 @@ public class World {
 
         for(int i=firstRow;i<=lastRow;i++){
             for(int j=firstCol;j<=lastCol;j++){
-                g.setColor(isSolid(j,i)?Color.green:Color.white);
+                Block block=Block.fromID(map[i][j]);
+                if(block.color==null)continue;
+                g.setColor(block.color);
                 g.fillRect(j*TILE_SIZE,i*TILE_SIZE,TILE_SIZE,TILE_SIZE);
             }
         }

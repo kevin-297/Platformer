@@ -60,7 +60,7 @@ public class Pane extends JPanel {
         world.update(step);
 
         double T=World.TILE_SIZE;
-        Rectangle player=world.getPlayer();
+        Rectangle player=world.getPlayerBounds();
         Dimension worldSize=world.getWorldSize();
 
         int px=player.x;
