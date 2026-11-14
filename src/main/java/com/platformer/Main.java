@@ -4,8 +4,6 @@ import javax.swing.*;
 
 public class Main extends JFrame {
 
-    public static Input input=new Input();
-
     private Pane pane=new Pane();
 
     public Main(){

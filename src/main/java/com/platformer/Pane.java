@@ -11,8 +11,15 @@ public class Pane extends JPanel {
 
     private final Color BG_COLOR=Color.white;
 
+    private final double ACTION_DELAY=0.1;
+    private double cooldown;
+
     private final World world=new World();
     private final Camera camera=new Camera(700,500);
+    private final HUD hud=new HUD();
+
+    public static final Input input=new Input();
+    public static final MouseInput mouse=new MouseInput();
 
     public Pane(){
         init();
@@ -25,7 +32,9 @@ public class Pane extends JPanel {
         setBackground(BG_COLOR);
         setOpaque(true);
         setFocusable(true);
-        addKeyListener(Main.input);
+        addKeyListener(input);
+        addMouseListener(mouse);
+        addMouseMotionListener(mouse);
 
     }
     private void loop(){
@@ -57,6 +66,19 @@ public class Pane extends JPanel {
     }
 
     private void update(){
+        cooldown-=step;
+        if(cooldown<=0){
+            Point selectedTile=getSelectedTile();
+            int tx=selectedTile.x;
+            int ty=selectedTile.y;
+
+            if(mouse.isRight()&&world.placeBlock(tx,ty,Input.getSelected()))
+                cooldown=ACTION_DELAY;
+            if(mouse.isLeft()&&world.breakBlock(tx,ty))
+                cooldown=ACTION_DELAY;
+
+        }
+
         world.update(step);
 
         double T=World.TILE_SIZE;
@@ -77,8 +99,31 @@ public class Pane extends JPanel {
         Graphics2D g2=(Graphics2D)g.create();
         camera.applyCamera(g2);
         world.paint(g2,camera.getCamera());
+
+        outline(g2);
+        
         g2.dispose();
 
+        hud.paint(g);
+
+    }
+
+    private void outline(Graphics2D g) {
+        g.setColor(Color.black);
+
+        int T=World.TILE_SIZE;
+        Point tile=getSelectedTile();
+
+        if(world.canReach(tile.x,tile.y))
+            g.drawRect(tile.x*T,tile.y*T,T,T);
+
+    }
+    private Point getSelectedTile(){
+        Rectangle cam=camera.getCamera();
+        int tx=(int)Math.floorDiv(mouse.getX()+cam.x,World.TILE_SIZE);
+        int ty=(int)Math.floorDiv(mouse.getY()+cam.y,World.TILE_SIZE);
+
+        return new Point(tx,ty);
     }
 
 }

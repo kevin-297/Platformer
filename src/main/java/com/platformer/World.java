@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -17,26 +19,7 @@ public class World {
 
     public static final int GRAVITY=47;
     public static final int TILE_SIZE=32;
-
-    private enum Block{
-        AIR(false,null),
-        GRASS(true,new Color(90,170,60)),
-        DIRT(true,new Color(130,90,50)),
-        STONE(true,new Color(120,120,120));
-
-        public final boolean solid;
-        public final Color color;
-
-        Block(boolean solid,Color color){
-            this.solid=solid;
-            this.color=color;
-        }
-        private static final Block[] ids=values();
-
-        public static Block fromID(int id){
-            return ids[id];
-        }
-    }
+    public static final int REACH=5;
 
     private static final byte[][] map=loadMap();
 
@@ -50,6 +33,30 @@ public class World {
     }
     public Dimension getWorldSize(){
         return new Dimension(TILE_WIDTH,TILE_HEIGHT);
+    }
+
+    public boolean canReach(int tx,int ty){
+        Rectangle2D b=player.getTileBounds();
+        Point2D loc=new Point2D.Double(b.getX(),b.getY());
+        double dx=(tx+0.5)-loc.getX();
+        double dy=(ty+0.5)-loc.getY();
+        return dx*dx+dy*dy<=REACH*REACH;
+    }
+    private boolean inBounds(int tx,int ty){
+        return tx>=0 && tx<TILE_WIDTH && ty>=0 && ty<TILE_HEIGHT;
+    }
+    public boolean breakBlock(int tx,int ty){
+        if(!inBounds(tx,ty) || !canReach(tx,ty)) return false;
+        if(map[ty][tx]==Block.AIR.ordinal())return false;
+        map[ty][tx]=(byte)Block.AIR.ordinal();
+        return true;
+    }
+    public boolean placeBlock(int tx,int ty,Block block){
+        if(!inBounds(tx,ty) || !canReach(tx,ty)) return false;
+        if(map[ty][tx]!=Block.AIR.ordinal())return false;
+        if(player.overlapsTile(tx,ty))return false;
+        map[ty][tx]=(byte)block.ordinal();
+        return true;
     }
 
     private static byte[][] loadMap() {

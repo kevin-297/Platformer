@@ -1,6 +1,7 @@
 package com.platformer;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class Player {
 
@@ -23,7 +24,7 @@ public class Player {
     private final double WIDTH =0.6;
     private final double HEIGHT=1.6;
 
-    public Player(double tileX,double y){
+    public Player(double tileX,double tileY){
         this.tileX=tileX;
         this.tileY=tileY;
     }
@@ -40,6 +41,18 @@ public class Player {
                 (int)Math.round(getWidth()*World.TILE_SIZE),
                 (int)Math.round(getHeight()*World.TILE_SIZE)
         );
+    }
+    public Rectangle2D getTileBounds(){
+        return new Rectangle2D.Double(
+                getX(),
+                getY(),
+                getWidth(),
+                getHeight()
+        );
+    }
+
+    public boolean overlapsTile(int tx,int ty){
+        return getTileBounds().intersects(tx,ty,1,1);
     }
 
     public void update(double dt){
