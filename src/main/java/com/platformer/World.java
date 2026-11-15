@@ -15,19 +15,44 @@ import java.io.UncheckedIOException;
 
 import java.util.List;
 
-public class World {
+public class World implements TileView{
 
     public static final int GRAVITY=47;
-    public static final int TILE_SIZE=32;
+    public static final int TILE_SIZE=8;
     public static final int REACH=5;
 
-    private static final byte[][] map=loadMap();
+    private final byte[][] map;
+    private final int TILE_WIDTH;
+    private final int TILE_HEIGHT;
 
-    private static final int TILE_WIDTH=map[0].length;
-    private static final int TILE_HEIGHT=map.length;
+    private final Player player;
 
-    private final Player player=new Player(10,10);
+    public World(byte[][] map){
+        this.map=map;
+        TILE_HEIGHT=map.length;
+        TILE_WIDTH=map[0].length;
 
+        player=new Player(spawnX(),spawnY());
+    }
+
+    private double spawnY() {
+        for(int ty=0;ty<TILE_HEIGHT;ty++)
+            if(Block.fromID(map[ty][0]).solid)return ty-1;
+        return 0;
+    }
+
+    private double spawnX() {
+        return 0;
+    }
+
+    public static World fromSeed(long seed,int width,int height){
+        return new World(World.genMap(seed,width,height));
+    }
+    public static World fromFile(String filePath){
+        return new World(World.loadMap(filePath));
+    }
+
+    public Player getPlayer(){return player;}
     public Rectangle getPlayerBounds(){
         return player.getBounds();
     }
@@ -59,18 +84,18 @@ public class World {
         return true;
     }
 
-    private static byte[][] loadMap() {
+    public static byte[][] loadMap(String filePath) {
 
         byte[][] grid;
 
-        try(InputStream inputStream= ClassLoader.getSystemResourceAsStream("map.txt")){
+        try(InputStream inputStream= ClassLoader.getSystemResourceAsStream(filePath)){
             if(inputStream==null)
-                throw new IllegalStateException("map.txt not found");
+                throw new IllegalStateException(filePath+" not found");
 
             List<String> rows=new BufferedReader(new InputStreamReader(inputStream)).lines().map(String::trim).filter(l -> !l.isEmpty()).toList();
 
             if(rows.isEmpty())
-                throw new IllegalStateException("map.txt is Empty");
+                throw new IllegalStateException(filePath+" is Empty");
 
             grid=new byte[rows.size()][rows.getFirst().length()];
 
@@ -90,16 +115,21 @@ public class World {
             }
             return grid;
         } catch (IOException e) {
-            throw new UncheckedIOException("Failed to read map.txt",e);
+            throw new UncheckedIOException("Failed to read "+filePath,e);
         }
     }
+    public static byte[][] genMap(long seed,int width,int height){
+        System.out.println(seed);
+        return TerrainGen.generate(seed,width,height);
+    }
 
-    public static boolean isSolid(int x,int y){
+    public boolean isSolid(int x,int y){
         return y >= map.length || y < 0 || x >= map[0].length || x < 0 || Block.fromID(map[y][x]).solid;
     }
 
     public void update(double dt) {
-        player.update(dt);
+        player.update(dt,this);
+
     }
     public void paint(Graphics g,Rectangle view){
 

@@ -55,7 +55,7 @@ public class Player {
         return getTileBounds().intersects(tx,ty,1,1);
     }
 
-    public void update(double dt){
+    public void update(double dt,TileView mapView){
 
         double tileAY=World.GRAVITY;
         tileVY+=tileAY*dt;
@@ -76,7 +76,7 @@ public class Player {
         if(tileVY!=0 ){
             for(int tx=leftTile;tx<=rightTile;tx++) {
                 int ty=(tileVY>0)?downTile:topTile;
-                if (World.isSolid(tx, ty)){
+                if (mapView.isSolid(tx, ty)){
                     if(tileVY>0) {
                         tileY = ty-HEIGHT;
                         onGround=true;
@@ -121,7 +121,7 @@ public class Player {
         if(tileVX!=0 ){
             for(int ty=topTile;ty<=downTile;ty++) {
                 int tx=(tileVX>0)?rightTile:leftTile;
-                if (World.isSolid(tx, ty)){
+                if (mapView.isSolid(tx, ty)){
                     if(tileVX>0)
                         tileX = tx-WIDTH;
                     else

@@ -14,7 +14,7 @@ public class Pane extends JPanel {
     private final double ACTION_DELAY=0.1;
     private double cooldown;
 
-    private final World world=new World();
+    private final World world=World.fromSeed(123,700,500);
     private final Camera camera=new Camera(700,500);
     private final HUD hud=new HUD();
 
@@ -91,6 +91,7 @@ public class Pane extends JPanel {
         int ph=player.height;
 
         camera.update(px+pw/2,py+ph/2,worldSize.width*T,worldSize.height*T);
+        hud.update(world.getPlayer(),world);
     }
     @Override
     protected void paintComponent(Graphics g) {
