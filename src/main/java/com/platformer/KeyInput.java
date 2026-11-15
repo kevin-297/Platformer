@@ -3,7 +3,7 @@ package com.platformer;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Input implements KeyListener {
+public class KeyInput implements KeyListener {
 
     private static volatile boolean right,left=false;
     private static volatile boolean jump=false;
@@ -20,6 +20,9 @@ public class Input implements KeyListener {
     }
     public static Block getSelected(){
         return selected;
+    }
+    public static void clearKeys(){
+        right=false;left=false;jump=false;
     }
 
     @Override

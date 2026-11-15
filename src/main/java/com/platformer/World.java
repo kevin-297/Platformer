@@ -36,13 +36,14 @@ public class World implements TileView{
     }
 
     private double spawnY() {
+        int x=(int)Math.floor(spawnX());
         for(int ty=0;ty<TILE_HEIGHT;ty++)
-            if(Block.fromID(map[ty][0]).solid)return ty-1;
+            if(Block.fromID(map[ty][x]).solid)return ty-Player.HEIGHT;
         return 0;
     }
 
     private double spawnX() {
-        return 0;
+        return TILE_WIDTH/2D;
     }
 
     public static World fromSeed(long seed,int width,int height){
@@ -62,9 +63,8 @@ public class World implements TileView{
 
     public boolean canReach(int tx,int ty){
         Rectangle2D b=player.getTileBounds();
-        Point2D loc=new Point2D.Double(b.getX(),b.getY());
-        double dx=(tx+0.5)-loc.getX();
-        double dy=(ty+0.5)-loc.getY();
+        double dx=(tx+0.5)-b.getCenterX();
+        double dy=(ty+0.5)-b.getCenterY();
         return dx*dx+dy*dy<=REACH*REACH;
     }
     private boolean inBounds(int tx,int ty){

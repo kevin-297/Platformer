@@ -21,8 +21,8 @@ public class Player {
     private final double JUMP_SPEED =16;
     private final double FRICTION = 56;
 
-    private final double WIDTH =0.6;
-    private final double HEIGHT=1.6;
+    public static final double WIDTH =0.6;
+    public static final double HEIGHT=1.6;
 
     public Player(double tileX,double tileY){
         this.tileX=tileX;
@@ -60,7 +60,7 @@ public class Player {
         double tileAY=World.GRAVITY;
         tileVY+=tileAY*dt;
 
-        if(Input.isJump() && onGround)
+        if(KeyInput.isJump() && onGround)
             tileVY = -JUMP_SPEED;
 
         tileVY= Math.min(tileVY, MAX_FALL_SPEED);
@@ -89,7 +89,7 @@ public class Player {
             }
         }
 
-        byte dir=(byte)((Input.isRight()?1:0)+(Input.isLeft()?-1:0));
+        byte dir=(byte)((KeyInput.isRight()?1:0)+(KeyInput.isLeft()?-1:0));
 
         double tileAX;
 
@@ -135,9 +135,6 @@ public class Player {
     }
 
     public void paint(Graphics g){
-
-        int T=World.TILE_SIZE;
-
         Rectangle p=getBounds();
 
         g.setColor(PLAYER_COLOR);

@@ -18,8 +18,9 @@ public class Pane extends JPanel {
     private final Camera camera=new Camera(700,500);
     private final HUD hud=new HUD();
 
-    public static final Input input=new Input();
+    public static final KeyInput keyboard =new KeyInput();
     public static final MouseInput mouse=new MouseInput();
+    public static final FocusInput focus=new FocusInput();
 
     public Pane(){
         init();
@@ -32,7 +33,9 @@ public class Pane extends JPanel {
         setBackground(BG_COLOR);
         setOpaque(true);
         setFocusable(true);
-        addKeyListener(input);
+
+        addFocusListener(focus);
+        addKeyListener(keyboard);
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
 
@@ -72,7 +75,7 @@ public class Pane extends JPanel {
             int tx=selectedTile.x;
             int ty=selectedTile.y;
 
-            if(mouse.isRight()&&world.placeBlock(tx,ty,Input.getSelected()))
+            if(mouse.isRight()&&world.placeBlock(tx,ty, KeyInput.getSelected()))
                 cooldown=ACTION_DELAY;
             if(mouse.isLeft()&&world.breakBlock(tx,ty))
                 cooldown=ACTION_DELAY;
