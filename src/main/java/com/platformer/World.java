@@ -72,6 +72,7 @@ public class World implements TileView{
     }
     public boolean breakBlock(int tx,int ty){
         if(!inBounds(tx,ty) || !canReach(tx,ty)) return false;
+
         if(map[ty][tx]==Block.AIR.ordinal())return false;
         map[ty][tx]=(byte)Block.AIR.ordinal();
         return true;
@@ -127,8 +128,8 @@ public class World implements TileView{
         return y >= map.length || y < 0 || x >= map[0].length || x < 0 || Block.fromID(map[y][x]).solid;
     }
 
-    public void update(double dt) {
-        player.update(dt,this);
+    public void update(double dt,PlayerInput input) {
+        player.update(dt,input,this);
 
     }
     public void paint(Graphics g,Rectangle view){

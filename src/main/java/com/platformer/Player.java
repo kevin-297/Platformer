@@ -55,12 +55,12 @@ public class Player {
         return getTileBounds().intersects(tx,ty,1,1);
     }
 
-    public void update(double dt,TileView mapView){
+    public void update(double dt,PlayerInput input,TileView mapView){
 
         double tileAY=World.GRAVITY;
         tileVY+=tileAY*dt;
 
-        if(KeyInput.isJump() && onGround)
+        if(input.space() && onGround)
             tileVY = -JUMP_SPEED;
 
         tileVY= Math.min(tileVY, MAX_FALL_SPEED);
@@ -89,7 +89,7 @@ public class Player {
             }
         }
 
-        byte dir=(byte)((KeyInput.isRight()?1:0)+(KeyInput.isLeft()?-1:0));
+        byte dir=(byte)((input.keyRight()?1:0)+(input.keyLeft()?-1:0));
 
         double tileAX;
 

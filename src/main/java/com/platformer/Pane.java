@@ -14,13 +14,15 @@ public class Pane extends JPanel {
     private final double ACTION_DELAY=0.1;
     private double cooldown;
 
+    private PlayerInput input;
+
     private final World world=World.fromSeed(123,700,500);
     private final Camera camera=new Camera(700,500);
     private final HUD hud=new HUD();
 
     public static final KeyInput keyboard =new KeyInput();
     public static final MouseInput mouse=new MouseInput();
-    public static final FocusInput focus=new FocusInput();
+    public static final FocusInput focus=new FocusInput(keyboard);
 
     public Pane(){
         init();
@@ -69,20 +71,34 @@ public class Pane extends JPanel {
     }
 
     private void update(){
+
+        input=new PlayerInput(
+                keyboard.isRight(),
+                keyboard.isLeft(),
+                keyboard.isJump(),
+                keyboard.getSelected(),
+                mouse.isRight(),
+                mouse.isLeft(),
+                mouse.getX(),
+                mouse.getY()
+        );
+
         cooldown-=step;
         if(cooldown<=0){
             Point selectedTile=getSelectedTile();
             int tx=selectedTile.x;
             int ty=selectedTile.y;
 
-            if(mouse.isRight()&&world.placeBlock(tx,ty, KeyInput.getSelected()))
-                cooldown=ACTION_DELAY;
-            if(mouse.isLeft()&&world.breakBlock(tx,ty))
-                cooldown=ACTION_DELAY;
+            if(input.mouseRight()&&world.placeBlock(tx,ty, Block.fromID(input.selected()))) {
+                cooldown = ACTION_DELAY;
+            }
+            if(input.mouseLeft()&&world.breakBlock(tx,ty)) {
+                cooldown = ACTION_DELAY;
+            }
 
         }
 
-        world.update(step);
+        world.update(step,input);
 
         double T=World.TILE_SIZE;
         Rectangle player=world.getPlayerBounds();
@@ -94,7 +110,7 @@ public class Pane extends JPanel {
         int ph=player.height;
 
         camera.update(px+pw/2,py+ph/2,worldSize.width*T,worldSize.height*T);
-        hud.update(world.getPlayer(),world);
+        hud.update(world.getPlayer(),input,world);
     }
     @Override
     protected void paintComponent(Graphics g) {
@@ -124,8 +140,8 @@ public class Pane extends JPanel {
     }
     private Point getSelectedTile(){
         Rectangle cam=camera.getCamera();
-        int tx=(int)Math.floorDiv(mouse.getX()+cam.x,World.TILE_SIZE);
-        int ty=(int)Math.floorDiv(mouse.getY()+cam.y,World.TILE_SIZE);
+        int tx=Math.floorDiv(input.mouseX()+cam.x,World.TILE_SIZE);
+        int ty=Math.floorDiv(input.mouseY()+cam.y,World.TILE_SIZE);
 
         return new Point(tx,ty);
     }

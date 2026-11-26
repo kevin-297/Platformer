@@ -7,21 +7,21 @@ public class KeyInput implements KeyListener {
 
     private static volatile boolean right,left=false;
     private static volatile boolean jump=false;
-    private static volatile Block selected=Block.DIRT;
+    private static volatile int selected=1;
 
-    public static boolean isRight(){
+    public boolean isRight(){
         return right;
     }
-    public static boolean isLeft(){
+    public boolean isLeft(){
         return left;
     }
-    public static boolean isJump(){
+    public boolean isJump(){
         return jump;
     }
-    public static Block getSelected(){
+    public int getSelected(){
         return selected;
     }
-    public static void clearKeys(){
+    public void clearKeys(){
         right=false;left=false;jump=false;
     }
 
@@ -31,9 +31,9 @@ public class KeyInput implements KeyListener {
             case KeyEvent.VK_D,KeyEvent.VK_RIGHT ->right=true;
             case KeyEvent.VK_A,KeyEvent.VK_LEFT  ->left=true;
             case KeyEvent.VK_SPACE -> jump=true;
-            case KeyEvent.VK_1 -> selected=Block.GRASS;
-            case KeyEvent.VK_2 -> selected=Block.DIRT;
-            case KeyEvent.VK_3 -> selected=Block.STONE;
+            case KeyEvent.VK_1 -> selected=1;
+            case KeyEvent.VK_2 -> selected=2;
+            case KeyEvent.VK_3 -> selected=3;
         }
     }
     @Override
