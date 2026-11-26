@@ -1,12 +1,9 @@
 package com.platformer;
 
-import java.awt.Graphics;
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Dimension;
-
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -56,7 +53,18 @@ public class World implements TileView{
     public byte[][] getMap(){
         return map;
     }
-    public Player getPlayer(){return player;}
+    public int getWidth(){
+        return TILE_WIDTH;
+    }
+    public int getHeight(){
+        return TILE_HEIGHT;
+    }
+    public Block getBlockAt(int x,int y){
+        return Block.fromID(map[y][x]);
+    }
+    public Player getPlayer(){
+        return player;
+    }
     public Rectangle getPlayerBounds(){
         return player.getBounds();
     }

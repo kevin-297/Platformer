@@ -7,12 +7,20 @@ import static com.platformer.World.TILE_SIZE;
 public class Renderer {
 
     private final Color PLAYER_COLOR=Color.black;
+    private final Camera camera;
+    private final Texture texture;
+    private final World world;
 
-    public void paint(Graphics2D g,Camera camera,Texture texture,World world){
+    public Renderer(Camera camera,Texture texture,World world){
+        this.camera=camera;
+        this.texture=texture;
+        this.world=world;
+    }
 
-        var map=world.getMap();
-        var TILE_HEIGHT=map.length;
-        var TILE_WIDTH=map[0].length;
+    public void paint(Graphics2D g){
+
+        var TILE_HEIGHT=world.getHeight();
+        var TILE_WIDTH=world.getWidth();
 
         var view=camera.getCamera();
         var player=world.getPlayer();
@@ -24,7 +32,7 @@ public class Renderer {
 
         for(int i=firstRow;i<=lastRow;i++){
             for(int j=firstCol;j<=lastCol;j++){
-                Block block=Block.fromID(map[i][j]);
+                Block block=world.getBlockAt(j,i);
                 if(texture.getBlockColor(block)==null)continue;
                 g.setColor(texture.getBlockColor(block));
                 g.fillRect(j*TILE_SIZE,i*TILE_SIZE,TILE_SIZE,TILE_SIZE);

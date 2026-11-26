@@ -1,7 +1,8 @@
 package com.platformer;
 
-import java.awt.*;
 import java.awt.geom.Rectangle2D;
+
+import java.awt.Rectangle;
 
 public class Player {
 

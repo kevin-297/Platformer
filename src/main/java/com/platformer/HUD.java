@@ -13,6 +13,14 @@ public class HUD {
     public HUD(Player player,Texture texture){
         this.player=player;
         this.texture=texture;
+        this.coordinates=new Point2D.Double(0,0);
+        this.input=new PlayerInput(
+                false,false,
+                false,
+                1,
+                false,false,
+                0,0
+        );
     }
 
     public void update(PlayerInput input,World world){

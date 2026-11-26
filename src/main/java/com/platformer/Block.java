@@ -1,7 +1,5 @@
 package com.platformer;
 
-import java.awt.*;
-
 public enum Block{
     AIR(false),
     GRASS(true),

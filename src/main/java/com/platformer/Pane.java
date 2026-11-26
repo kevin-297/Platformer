@@ -23,9 +23,9 @@ public class Pane extends JPanel {
     );
 
     private final Texture texture=new Texture();
-    private final Renderer renderer=new Renderer();
     private final World world=World.fromSeed(123,700,500);
     private final Camera camera=new Camera(700,500);
+    private final Renderer renderer=new Renderer(camera,texture,world);
     private final HUD hud=new HUD(world.getPlayer(),texture);
 
     public static final KeyInput keyboard =new KeyInput();
@@ -128,7 +128,7 @@ public class Pane extends JPanel {
 
         camera.applyCamera(g2);
 
-        renderer.paint(g2,camera,texture,world);
+        renderer.paint(g2);
 
         outline(g2);
         

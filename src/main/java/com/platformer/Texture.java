@@ -12,7 +12,6 @@ public class Texture {
     }
 
     private void loadTextures(){
-        blocks.put(Block.AIR,null);
         blocks.put(Block.GRASS,new Color(90,170,60));
         blocks.put(Block.DIRT,new Color(130,90,50));
         blocks.put(Block.STONE,new Color(120,120,120));
