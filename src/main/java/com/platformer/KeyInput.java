@@ -5,9 +5,9 @@ import java.awt.event.KeyListener;
 
 public class KeyInput implements KeyListener {
 
-    private static volatile boolean right,left=false;
-    private static volatile boolean jump=false;
-    private static volatile int selected=1;
+    private volatile boolean right,left=false;
+    private volatile boolean jump=false;
+    private volatile int selected=1;
 
     public boolean isRight(){
         return right;

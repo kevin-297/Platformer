@@ -14,7 +14,7 @@ public class Pane extends JPanel {
     private final double ACTION_DELAY=0.1;
     private double cooldown;
 
-    private PlayerInput input=new PlayerInput(
+    private volatile PlayerInput input=new PlayerInput(
             false,false,
             false,
             1,
