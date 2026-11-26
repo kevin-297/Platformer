@@ -25,7 +25,7 @@ public class HUD {
 
     public void update(PlayerInput input,World world){
         this.input=input;
-        this.coordinates=new Point2D.Double(player.getX()+player.getWidth()/2,world.getWorldSize().getHeight()-(player.getY()+player.getHeight()));
+        this.coordinates=new Point2D.Double(player.getX()+player.getWidth()/2,world.getHeight()-(player.getY()+player.getHeight()));
     }
 
     public void paint(Graphics g){

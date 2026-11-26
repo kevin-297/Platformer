@@ -59,9 +59,6 @@ public class World implements TileView{
     public Player getPlayer(){
         return player;
     }
-    public Dimension getWorldSize(){
-        return new Dimension(TILE_WIDTH,TILE_HEIGHT);
-    }
 
     public boolean canReach(int tx,int ty){
         double dx=(tx+0.5)-(player.getX()+player.getWidth() /2);
