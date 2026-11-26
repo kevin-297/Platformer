@@ -142,6 +142,19 @@ public class World implements TileView{
 
     public void update(double dt,PlayerInput input) {
         player.update(dt,input,this);
+        handleActions(player,input);
+    }
 
+    private void handleActions(Player player,PlayerInput input) {
+        if(player.canAct()){
+            int tx=input.sTileX();
+            int ty=input.sTileY();
+
+            if(input.mouseRight()&&placeBlock(tx,ty, Block.fromID(input.selected())))
+                player.resetCoolDown();
+            else if(input.mouseLeft()&&breakBlock(tx,ty))
+                player.resetCoolDown();
+
+        }
     }
 }

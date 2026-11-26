@@ -1,8 +1,7 @@
 package com.platformer;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
-
-import java.awt.Rectangle;
 
 public class Player {
 
@@ -19,6 +18,9 @@ public class Player {
     private final double TH_ACCELERATION=88;
     private final double JUMP_SPEED =16;
     private final double FRICTION = 56;
+
+    private final double ACTION_DELAY=0.1;
+    private double cooldown;
 
     public static final double WIDTH =0.6;
     public static final double HEIGHT=1.6;
@@ -54,7 +56,16 @@ public class Player {
         return getTileBounds().intersects(tx,ty,1,1);
     }
 
+    public boolean canAct(){
+        return cooldown<=0;
+    }
+    public void resetCoolDown(){
+        cooldown=ACTION_DELAY;
+    }
+
     public void update(double dt,PlayerInput input,TileView mapView){
+
+        cooldown=Math.max(0,cooldown-dt);
 
         double tileAY=World.GRAVITY;
         tileVY+=tileAY*dt;

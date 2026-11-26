@@ -11,9 +11,6 @@ public class Pane extends JPanel {
 
     private final Color BG_COLOR=Color.white;
 
-    private final double ACTION_DELAY=0.1;
-    private double cooldown;
-
     private volatile PlayerInput input=new PlayerInput(
             false,false,
             false,
@@ -80,6 +77,8 @@ public class Pane extends JPanel {
 
     private void update(){
 
+        Point selected=getSelectedTile();
+
         input=new PlayerInput(
                 keyboard.isRight(),
                 keyboard.isLeft(),
@@ -87,24 +86,9 @@ public class Pane extends JPanel {
                 keyboard.getSelected(),
                 mouse.isRight(),
                 mouse.isLeft(),
-                mouse.getX(),
-                mouse.getY()
+                selected.x,
+                selected.y
         );
-
-        cooldown-=step;
-        if(cooldown<=0){
-            Point selectedTile=getSelectedTile();
-            int tx=selectedTile.x;
-            int ty=selectedTile.y;
-
-            if(input.mouseRight()&&world.placeBlock(tx,ty, Block.fromID(input.selected()))) {
-                cooldown = ACTION_DELAY;
-            }
-            if(input.mouseLeft()&&world.breakBlock(tx,ty)) {
-                cooldown = ACTION_DELAY;
-            }
-
-        }
 
         world.update(step,input);
 
@@ -150,8 +134,8 @@ public class Pane extends JPanel {
     }
     private Point getSelectedTile(){
         Rectangle cam=camera.getCamera();
-        int tx=Math.floorDiv(input.mouseX()+cam.x,World.TILE_SIZE);
-        int ty=Math.floorDiv(input.mouseY()+cam.y,World.TILE_SIZE);
+        int tx=Math.floorDiv(mouse.getX()+cam.x,World.TILE_SIZE);
+        int ty=Math.floorDiv(mouse.getY()+cam.y,World.TILE_SIZE);
 
         return new Point(tx,ty);
     }

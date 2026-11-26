@@ -5,6 +5,6 @@ public record PlayerInput   (
                             boolean space,
                             int selected,
                             boolean mouseRight, boolean mouseLeft,
-                            int mouseX,int mouseY
+                            int sTileX,int sTileY
                             ) {
 }
