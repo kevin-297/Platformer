@@ -22,9 +22,11 @@ public class Pane extends JPanel {
             0,0
     );
 
+    private final Texture texture=new Texture();
+    private final Renderer renderer=new Renderer();
     private final World world=World.fromSeed(123,700,500);
     private final Camera camera=new Camera(700,500);
-    private final HUD hud=new HUD();
+    private final HUD hud=new HUD(world.getPlayer(),texture);
 
     public static final KeyInput keyboard =new KeyInput();
     public static final MouseInput mouse=new MouseInput();
@@ -116,15 +118,17 @@ public class Pane extends JPanel {
         int ph=player.height;
 
         camera.update(px+pw/2,py+ph/2,worldSize.width*T,worldSize.height*T);
-        hud.update(world.getPlayer(),input,world);
+        hud.update(input,world);
     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2=(Graphics2D)g.create();
+
         camera.applyCamera(g2);
-        world.paint(g2,camera.getCamera());
+
+        renderer.paint(g2,camera,texture,world);
 
         outline(g2);
         

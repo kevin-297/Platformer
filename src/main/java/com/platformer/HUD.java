@@ -5,12 +5,17 @@ import java.awt.geom.Point2D;
 
 public class HUD {
 
+    private final Texture texture;
     Player player;
     Point2D coordinates;
     PlayerInput input;
 
-    public void update(Player player,PlayerInput input,World world){
+    public HUD(Player player,Texture texture){
         this.player=player;
+        this.texture=texture;
+    }
+
+    public void update(PlayerInput input,World world){
         this.input=input;
         this.coordinates=new Point2D.Double(player.getX()+player.getWidth()/2,world.getWorldSize().getHeight()-(player.getY()+player.getHeight()));
     }
@@ -20,7 +25,7 @@ public class HUD {
         Rectangle r =g.getClipBounds();
         Rectangle block=new Rectangle((r.width-BLOCK_SIZE)/2,5,BLOCK_SIZE,BLOCK_SIZE);
 
-        g.setColor(Block.fromID(input.selected()).color);
+        g.setColor(texture.getBlockColor(Block.fromID(input.selected())));
         g.fillRect(block.x,block.y,block.width,block.height);
 
         g.setColor(Color.black);

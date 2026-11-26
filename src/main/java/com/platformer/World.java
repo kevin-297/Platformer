@@ -53,6 +53,9 @@ public class World implements TileView{
         return new World(World.loadMap(filePath));
     }
 
+    public byte[][] getMap(){
+        return map;
+    }
     public Player getPlayer(){return player;}
     public Rectangle getPlayerBounds(){
         return player.getBounds();
@@ -70,6 +73,7 @@ public class World implements TileView{
     private boolean inBounds(int tx,int ty){
         return tx>=0 && tx<TILE_WIDTH && ty>=0 && ty<TILE_HEIGHT;
     }
+
     public boolean breakBlock(int tx,int ty){
         if(!inBounds(tx,ty) || !canReach(tx,ty)) return false;
 
@@ -131,22 +135,5 @@ public class World implements TileView{
     public void update(double dt,PlayerInput input) {
         player.update(dt,input,this);
 
-    }
-    public void paint(Graphics g,Rectangle view){
-
-        int firstCol = Math.max(0, Math.floorDiv(view.x, TILE_SIZE));
-        int lastCol  = Math.min(TILE_WIDTH  - 1, Math.floorDiv(view.x + view.width  - 1, TILE_SIZE));
-        int firstRow = Math.max(0, Math.floorDiv(view.y, TILE_SIZE));
-        int lastRow  = Math.min(TILE_HEIGHT - 1, Math.floorDiv(view.y + view.height - 1, TILE_SIZE));
-
-        for(int i=firstRow;i<=lastRow;i++){
-            for(int j=firstCol;j<=lastCol;j++){
-                Block block=Block.fromID(map[i][j]);
-                if(block.color==null)continue;
-                g.setColor(block.color);
-                g.fillRect(j*TILE_SIZE,i*TILE_SIZE,TILE_SIZE,TILE_SIZE);
-            }
-        }
-        player.paint(g);
     }
 }

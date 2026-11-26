@@ -10,8 +10,6 @@ public class Player {
 
     private boolean onGround=false;
 
-    private final Color PLAYER_COLOR=Color.black;
-
     private final double EPS=0.0001;
 
     private final double MAX_H_SPEED=7;
@@ -131,14 +129,6 @@ public class Player {
                 }
             }
         }
-
-    }
-
-    public void paint(Graphics g){
-        Rectangle p=getBounds();
-
-        g.setColor(PLAYER_COLOR);
-        g.fillRect(p.x,p.y,p.width,p.height);
 
     }
 
