@@ -15,7 +15,6 @@ import java.util.List;
 public class World implements TileView{
 
     public static final int GRAVITY=47;
-    public static final int TILE_SIZE=8;
     public static final int REACH=5;
 
     private final byte[][] map;
@@ -73,7 +72,7 @@ public class World implements TileView{
     }
 
     public boolean canReach(int tx,int ty){
-        Rectangle2D b=player.getTileBounds();
+        Rectangle2D b=player.getBounds();
         double dx=(tx+0.5)-b.getCenterX();
         double dy=(ty+0.5)-b.getCenterY();
         return dx*dx+dy*dy<=REACH*REACH;

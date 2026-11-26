@@ -37,23 +37,15 @@ public class Player {
 
     public Rectangle getBounds(){
         return new Rectangle(
-                (int)Math.round(getX()*World.TILE_SIZE),
-                (int)Math.round(getY()*World.TILE_SIZE),
-                (int)Math.round(getWidth()*World.TILE_SIZE),
-                (int)Math.round(getHeight()*World.TILE_SIZE)
-        );
-    }
-    public Rectangle2D getTileBounds(){
-        return new Rectangle2D.Double(
-                getX(),
-                getY(),
-                getWidth(),
-                getHeight()
+                (int)Math.round(getX()),
+                (int)Math.round(getY()),
+                (int)Math.round(getWidth()),
+                (int)Math.round(getHeight())
         );
     }
 
     public boolean overlapsTile(int tx,int ty){
-        return getTileBounds().intersects(tx,ty,1,1);
+        return getBounds().intersects(tx,ty,1,1);
     }
 
     public boolean canAct(){

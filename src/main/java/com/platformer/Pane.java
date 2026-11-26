@@ -92,14 +92,14 @@ public class Pane extends JPanel {
 
         world.update(step,input);
 
-        double T=World.TILE_SIZE;
+        double T=Renderer.TILE_SIZE;
         Rectangle player=world.getPlayerBounds();
         Dimension worldSize=world.getWorldSize();
 
-        int px=player.x;
-        int py=player.y;
-        int pw=player.width;
-        int ph=player.height;
+        int px=player.x*Renderer.TILE_SIZE;
+        int py=player.y*Renderer.TILE_SIZE;
+        int pw=player.width*Renderer.TILE_SIZE;
+        int ph=player.height*Renderer.TILE_SIZE;
 
         camera.update(px+pw/2,py+ph/2,worldSize.width*T,worldSize.height*T);
         hud.update(input,world);
@@ -125,7 +125,7 @@ public class Pane extends JPanel {
     private void outline(Graphics2D g) {
         g.setColor(Color.black);
 
-        int T=World.TILE_SIZE;
+        int T=Renderer.TILE_SIZE;
         Point tile=getSelectedTile();
 
         if(world.canReach(tile.x,tile.y))
@@ -134,8 +134,8 @@ public class Pane extends JPanel {
     }
     private Point getSelectedTile(){
         Rectangle cam=camera.getCamera();
-        int tx=Math.floorDiv(mouse.getX()+cam.x,World.TILE_SIZE);
-        int ty=Math.floorDiv(mouse.getY()+cam.y,World.TILE_SIZE);
+        int tx=Math.floorDiv(mouse.getX()+cam.x,Renderer.TILE_SIZE);
+        int ty=Math.floorDiv(mouse.getY()+cam.y,Renderer.TILE_SIZE);
 
         return new Point(tx,ty);
     }

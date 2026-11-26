@@ -2,9 +2,9 @@ package com.platformer;
 
 import java.awt.*;
 
-import static com.platformer.World.TILE_SIZE;
-
 public class Renderer {
+
+    public static final int TILE_SIZE=8;
 
     private final Color PLAYER_COLOR=Color.black;
     private final Camera camera;
@@ -39,6 +39,11 @@ public class Renderer {
             }
         }
         Rectangle p=player.getBounds();
+
+        p.x=p.x*TILE_SIZE;
+        p.y=p.y*TILE_SIZE;
+        p.width=p.width*TILE_SIZE;
+        p.height=p.height*TILE_SIZE;
 
         g.setColor(PLAYER_COLOR);
         g.fillRect(p.x,p.y,p.width,p.height);
