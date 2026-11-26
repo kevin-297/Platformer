@@ -38,15 +38,14 @@ public class Renderer {
                 g.fillRect(j*TILE_SIZE,i*TILE_SIZE,TILE_SIZE,TILE_SIZE);
             }
         }
-        Rectangle p=player.getBounds();
 
-        p.x=p.x*TILE_SIZE;
-        p.y=p.y*TILE_SIZE;
-        p.width=p.width*TILE_SIZE;
-        p.height=p.height*TILE_SIZE;
+        var x=(int)Math.round(player.getX()*TILE_SIZE);
+        var y=(int)Math.round(player.getY()*TILE_SIZE);
+        var width=(int)Math.round(player.getWidth()*TILE_SIZE);
+        var height=(int)Math.round(player.getHeight()*TILE_SIZE);
 
         g.setColor(PLAYER_COLOR);
-        g.fillRect(p.x,p.y,p.width,p.height);
+        g.fillRect(x,y,width,height);
 
     }
 

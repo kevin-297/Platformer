@@ -93,13 +93,13 @@ public class Pane extends JPanel {
         world.update(step,input);
 
         double T=Renderer.TILE_SIZE;
-        Rectangle player=world.getPlayerBounds();
+        Player player=world.getPlayer();
         Dimension worldSize=world.getWorldSize();
 
-        int px=player.x*Renderer.TILE_SIZE;
-        int py=player.y*Renderer.TILE_SIZE;
-        int pw=player.width*Renderer.TILE_SIZE;
-        int ph=player.height*Renderer.TILE_SIZE;
+        int px=(int)Math.round(player.getX()*Renderer.TILE_SIZE);
+        int py=(int)Math.round(player.getY()*Renderer.TILE_SIZE);
+        int pw=(int)Math.round(player.getWidth()*Renderer.TILE_SIZE);
+        int ph=(int)Math.round(player.getHeight()*Renderer.TILE_SIZE);
 
         camera.update(px+pw/2,py+ph/2,worldSize.width*T,worldSize.height*T);
         hud.update(input,world);

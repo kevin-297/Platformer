@@ -1,8 +1,6 @@
 package com.platformer;
 
-import java.awt.Rectangle;
 import java.awt.Dimension;
-import java.awt.geom.Rectangle2D;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -49,9 +47,6 @@ public class World implements TileView{
         return new World(World.loadMap(filePath));
     }
 
-    public byte[][] getMap(){
-        return map;
-    }
     public int getWidth(){
         return TILE_WIDTH;
     }
@@ -64,17 +59,13 @@ public class World implements TileView{
     public Player getPlayer(){
         return player;
     }
-    public Rectangle getPlayerBounds(){
-        return player.getBounds();
-    }
     public Dimension getWorldSize(){
         return new Dimension(TILE_WIDTH,TILE_HEIGHT);
     }
 
     public boolean canReach(int tx,int ty){
-        Rectangle2D b=player.getBounds();
-        double dx=(tx+0.5)-b.getCenterX();
-        double dy=(ty+0.5)-b.getCenterY();
+        double dx=(tx+0.5)-(player.getX()+player.getWidth() /2);
+        double dy=(ty+0.5)-(player.getY()+player.getHeight()/2);
         return dx*dx+dy*dy<=REACH*REACH;
     }
     private boolean inBounds(int tx,int ty){

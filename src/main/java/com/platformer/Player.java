@@ -1,8 +1,5 @@
 package com.platformer;
 
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-
 public class Player {
 
     private double tileX,tileY;
@@ -35,17 +32,15 @@ public class Player {
     public double getWidth(){return WIDTH;}
     public double getHeight(){return HEIGHT;}
 
-    public Rectangle getBounds(){
-        return new Rectangle(
-                (int)Math.round(getX()),
-                (int)Math.round(getY()),
-                (int)Math.round(getWidth()),
-                (int)Math.round(getHeight())
-        );
-    }
-
     public boolean overlapsTile(int tx,int ty){
-        return getBounds().intersects(tx,ty,1,1);
+
+        double x0 = getX();
+        double y0 = getY();
+        return (tx + 1 > x0 &&
+                ty + 1 > y0 &&
+                tx < x0 + getWidth() &&
+                ty < y0 + getHeight());
+
     }
 
     public boolean canAct(){
