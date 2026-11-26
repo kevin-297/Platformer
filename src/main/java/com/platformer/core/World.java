@@ -1,6 +1,4 @@
-package com.platformer;
-
-import java.awt.Dimension;
+package com.platformer.core;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,7 +8,7 @@ import java.io.UncheckedIOException;
 
 import java.util.List;
 
-public class World implements TileView{
+public class World implements TileView {
 
     public static final int GRAVITY=47;
     public static final int REACH=5;
@@ -127,7 +125,7 @@ public class World implements TileView{
         return y >= map.length || y < 0 || x >= map[0].length || x < 0 || Block.fromID(map[y][x]).solid;
     }
 
-    public void update(double dt,PlayerInput input) {
+    public void update(double dt, PlayerInput input) {
         player.update(dt,input,this);
         handleActions(player,input);
     }

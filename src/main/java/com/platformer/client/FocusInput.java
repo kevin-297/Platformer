@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.client;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;

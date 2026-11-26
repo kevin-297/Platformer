@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.core;
 
 public enum Block{
     AIR(false),

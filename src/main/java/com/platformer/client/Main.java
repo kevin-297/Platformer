@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.client;
 
 import javax.swing.*;
 

@@ -1,4 +1,9 @@
-package com.platformer;
+package com.platformer.client;
+
+import com.platformer.core.Block;
+import com.platformer.core.Player;
+import com.platformer.core.PlayerInput;
+import com.platformer.core.World;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -23,7 +28,7 @@ public class HUD {
         );
     }
 
-    public void update(PlayerInput input,World world){
+    public void update(PlayerInput input, World world){
         this.input=input;
         this.coordinates=new Point2D.Double(player.getX()+player.getWidth()/2,world.getHeight()-(player.getY()+player.getHeight()));
     }

@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.client;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

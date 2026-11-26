@@ -1,4 +1,8 @@
-package com.platformer;
+package com.platformer.client;
+
+import com.platformer.core.Player;
+import com.platformer.core.PlayerInput;
+import com.platformer.core.World;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.core;
 
 public record TerrainSettings(int base,
                               double amplitude,

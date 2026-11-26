@@ -1,10 +1,10 @@
-package com.platformer;
+package com.platformer.core;
 
 public final class TerrainGen {
     private TerrainGen() {}
 
     public static byte[][] generate(long seed, int width, int height) {
-        return generate(seed,width,height,TerrainSettings.defaults());
+        return generate(seed,width,height, TerrainSettings.defaults());
     }
     public static byte[][] generate(long seed, int width, int height,TerrainSettings S) {
         byte[][] grid = new byte[height][width];

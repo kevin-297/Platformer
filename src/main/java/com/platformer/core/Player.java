@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.core;
 
 public class Player {
 
@@ -50,11 +50,11 @@ public class Player {
         cooldown=ACTION_DELAY;
     }
 
-    public void update(double dt,PlayerInput input,TileView mapView){
+    public void update(double dt, PlayerInput input, TileView mapView){
 
         cooldown=Math.max(0,cooldown-dt);
 
-        double tileAY=World.GRAVITY;
+        double tileAY= World.GRAVITY;
         tileVY+=tileAY*dt;
 
         if(input.space() && onGround)

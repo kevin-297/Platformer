@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.core;
 
 public record PlayerInput   (
                             boolean keyRight, boolean keyLeft,

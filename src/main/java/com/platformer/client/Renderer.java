@@ -1,4 +1,7 @@
-package com.platformer;
+package com.platformer.client;
+
+import com.platformer.core.Block;
+import com.platformer.core.World;
 
 import java.awt.*;
 

@@ -1,4 +1,6 @@
-package com.platformer;
+package com.platformer.client;
+
+import com.platformer.core.Block;
 
 import java.awt.*;
 import java.util.EnumMap;

@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.core;
 
 public final class Noise {
     private Noise() {}

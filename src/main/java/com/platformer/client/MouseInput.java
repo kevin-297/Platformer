@@ -1,4 +1,4 @@
-package com.platformer;
+package com.platformer.client;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
