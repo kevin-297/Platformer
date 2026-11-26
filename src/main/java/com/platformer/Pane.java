@@ -14,7 +14,13 @@ public class Pane extends JPanel {
     private final double ACTION_DELAY=0.1;
     private double cooldown;
 
-    private PlayerInput input;
+    private PlayerInput input=new PlayerInput(
+            false,false,
+            false,
+            1,
+            false,false,
+            0,0
+    );
 
     private final World world=World.fromSeed(123,700,500);
     private final Camera camera=new Camera(700,500);
