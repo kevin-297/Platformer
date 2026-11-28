@@ -38,8 +38,9 @@ public class HUD {
         g.setColor(Color.black);
         g.drawRect(block.x,block.y,block.width,block.height);
 
-        if(view!=null)
-            g.drawString(String.format("%.2f,%.2f",view.getPlayerX(),view.getPlayerY()),10,10);
+        var playerX=view.getPlayerX()+view.getPlayerWidth()/2D;
+        var playerY=view.getWorldHeight()-(view.getPlayerY()+view.getPlayerHeight());
+        g.drawString(String.format("%.2f,%.2f", playerX, playerY), 10, 10);
 
     }
 }
