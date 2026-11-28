@@ -23,15 +23,15 @@ public class Renderer {
 
     public void paint(Graphics2D g){
 
-        var TILE_HEIGHT=view.getHeight();
-        var TILE_WIDTH=view.getWidth();
+        var TILE_HEIGHT=view.getWorldHeight();
+        var TILE_WIDTH=view.getWorldWidth();
 
         var cam=camera.getCamera();
 
         int firstCol = Math.max(0, Math.floorDiv(cam.x, TILE_SIZE));
-        int lastCol  = Math.min((int)Math.floor(TILE_WIDTH  - 1), Math.floorDiv(cam.x + cam.width  - 1, TILE_SIZE));
+        int lastCol  = Math.min(TILE_WIDTH  - 1, Math.floorDiv(cam.x + cam.width  - 1, TILE_SIZE));
         int firstRow = Math.max(0, Math.floorDiv(cam.y, TILE_SIZE));
-        int lastRow  = Math.min((int)Math.ceil(TILE_HEIGHT - 1), Math.floorDiv(cam.y + cam.height - 1, TILE_SIZE));
+        int lastRow  = Math.min(TILE_HEIGHT - 1, Math.floorDiv(cam.y + cam.height - 1, TILE_SIZE));
 
         for(int i=firstRow;i<=lastRow;i++){
             for(int j=firstCol;j<=lastCol;j++){
@@ -44,8 +44,8 @@ public class Renderer {
 
         var x=(int)Math.round(view.getPlayerX()*TILE_SIZE);
         var y=(int)Math.round(view.getPlayerY()*TILE_SIZE);
-        var width=(int)Math.round(view.getWidth()*TILE_SIZE);
-        var height=(int)Math.round(view.getHeight()*TILE_SIZE);
+        var width=(int)Math.round(view.getPlayerWidth()*TILE_SIZE);
+        var height=(int)Math.round(view.getPlayerHeight()*TILE_SIZE);
 
         g.setColor(PLAYER_COLOR);
         g.fillRect(x,y,width,height);

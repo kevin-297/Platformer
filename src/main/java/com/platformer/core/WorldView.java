@@ -3,8 +3,8 @@ package com.platformer.core;
 public interface WorldView {
     boolean isSolid(int x,int y);
 
-    double getWidth();
-    double getHeight();
+    int getWorldWidth();
+    int getWorldHeight();
     Block getBlockAt(int x, int y);
 
     double getPlayerWidth();

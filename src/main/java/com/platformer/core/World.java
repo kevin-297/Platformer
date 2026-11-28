@@ -14,8 +14,8 @@ public class World implements WorldView {
     public static final int REACH=5;
 
     private final byte[][] map;
-    private final double TILE_WIDTH;
-    private final double TILE_HEIGHT;
+    private final int TILE_WIDTH;
+    private final int TILE_HEIGHT;
 
     private final Player player;
 
@@ -45,10 +45,10 @@ public class World implements WorldView {
         return new World(World.loadMap(filePath));
     }
 
-    public double getWidth(){
+    public int getWorldWidth(){
         return TILE_WIDTH;
     }
-    public double getHeight(){
+    public int getWorldHeight(){
         return TILE_HEIGHT;
     }
     public Block getBlockAt(int x,int y){

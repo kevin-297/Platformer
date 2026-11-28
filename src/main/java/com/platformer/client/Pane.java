@@ -104,7 +104,7 @@ public class Pane extends JPanel {
         int pw=(int)Math.round(player.getWidth()*Renderer.TILE_SIZE);
         int ph=(int)Math.round(player.getHeight()*Renderer.TILE_SIZE);
 
-        camera.update(px+pw/2,py+ph/2,world.getWidth()*T,world.getHeight()*T);
+        camera.update(px+pw/2,py+ph/2,world.getWorldWidth()*T,world.getWorldHeight()*T);
         hud.update(input);
     }
     @Override
