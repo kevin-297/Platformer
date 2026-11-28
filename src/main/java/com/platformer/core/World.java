@@ -8,14 +8,14 @@ import java.io.UncheckedIOException;
 
 import java.util.List;
 
-public class World implements TileView {
+public class World implements WorldView {
 
     public static final int GRAVITY=47;
     public static final int REACH=5;
 
     private final byte[][] map;
-    private final int TILE_WIDTH;
-    private final int TILE_HEIGHT;
+    private final double TILE_WIDTH;
+    private final double TILE_HEIGHT;
 
     private final Player player;
 
@@ -45,15 +45,28 @@ public class World implements TileView {
         return new World(World.loadMap(filePath));
     }
 
-    public int getWidth(){
+    public double getWidth(){
         return TILE_WIDTH;
     }
-    public int getHeight(){
+    public double getHeight(){
         return TILE_HEIGHT;
     }
     public Block getBlockAt(int x,int y){
         return Block.fromID(map[y][x]);
     }
+    public double getPlayerWidth(){
+        return player.getWidth();
+    }
+    public double getPlayerHeight(){
+        return player.getHeight();
+    }
+    public double getPlayerX(){
+        return player.getX();
+    }
+    public double getPlayerY(){
+        return player.getY();
+    }
+
     public Player getPlayer(){
         return player;
     }

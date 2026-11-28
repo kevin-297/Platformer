@@ -1,9 +1,6 @@
 package com.platformer.client;
 
-import com.platformer.core.Block;
-import com.platformer.core.Player;
-import com.platformer.core.PlayerInput;
-import com.platformer.core.World;
+import com.platformer.core.*;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -11,14 +8,12 @@ import java.awt.geom.Point2D;
 public class HUD {
 
     private final Texture texture;
-    Player player;
-    Point2D coordinates;
-    PlayerInput input;
+    private final WorldView view;
+    private PlayerInput input;
 
-    public HUD(Player player,Texture texture){
-        this.player=player;
+    public HUD(WorldView view, Texture texture){
+        this.view=view;
         this.texture=texture;
-        this.coordinates=new Point2D.Double(0,0);
         this.input=new PlayerInput(
                 false,false,
                 false,
@@ -28,9 +23,8 @@ public class HUD {
         );
     }
 
-    public void update(PlayerInput input, World world){
+    public void update(PlayerInput input){
         this.input=input;
-        this.coordinates=new Point2D.Double(player.getX()+player.getWidth()/2,world.getHeight()-(player.getY()+player.getHeight()));
     }
 
     public void paint(Graphics g){
@@ -44,8 +38,8 @@ public class HUD {
         g.setColor(Color.black);
         g.drawRect(block.x,block.y,block.width,block.height);
 
-        if(player!=null)
-            g.drawString(String.format("%.2f,%.2f",coordinates.getX(),coordinates.getY()),10,10);
+        if(view!=null)
+            g.drawString(String.format("%.2f,%.2f",view.getPlayerX(),view.getPlayerY()),10,10);
 
     }
 }

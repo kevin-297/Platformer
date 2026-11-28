@@ -50,7 +50,7 @@ public class Player {
         cooldown=ACTION_DELAY;
     }
 
-    public void update(double dt, PlayerInput input, TileView mapView){
+    public void update(double dt, PlayerInput input, WorldView mapView){
 
         cooldown=Math.max(0,cooldown-dt);
 
